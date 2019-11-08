@@ -6,7 +6,7 @@
 #include "logger_module.h"
 #include "parser_module.h"
 
-#define DB_KEYS_NUMBER 3
+#define DB_KEYS_NUMBER 4
 #define IO_ELEM_KEYS_NUMBER 3
 
 static PGconn *conn;
@@ -18,7 +18,7 @@ static int io_odometer_id;
 void
 db_connect()
 {
- char db_keys[DB_KEYS_NUMBER+1][MAX_CONF_STRING_LEN] = {"dbname", "username", "password", ""};
+ char db_keys[DB_KEYS_NUMBER+1][MAX_CONF_STRING_LEN] = {"dbhost", "dbname", "username", "password", ""};
  char db_values[DB_KEYS_NUMBER][MAX_CONF_STRING_LEN];
 
  char io_elem_keys[IO_ELEM_KEYS_NUMBER + 1][MAX_CONF_STRING_LEN] = {"io_ignation_id", "io_speed_id", "io_odometer_id", ""};
@@ -28,7 +28,7 @@ db_connect()
 
  conf_read("database", db_keys, db_values);
 
- sprintf(conn_string, "user=%s dbname=%s password=%s", db_values[0], db_values[1], db_values[2]);
+ sprintf(conn_string, "host=%s, user=%s dbname=%s password=%s", db_values[0], db_values[1], db_values[2], db_values[3]);
  conn = PQconnectdb(conn_string);
 
  if (PQstatus(conn) == CONNECTION_BAD)
